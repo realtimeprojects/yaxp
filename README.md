@@ -10,8 +10,14 @@ Create the most simple xpath for a `div` element:
     from yaxp import xpath
 
     # //div
-    xpath.div()
+    xpath.div
     ```
+
+xpath objects are chainable:
+
+    ``` python
+    # //div//h1
+    xpath.div.h1
 
 Any keyword argument you pass will add a filter for an
 attribute with the name and value of the keyword:

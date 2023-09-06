@@ -5,6 +5,7 @@ from yaxp import xpath as xp
 testdata = [
     # basic xpath
     (xp.h1,                  '//h1'),
+    (xp.div.h1,                  '//div//h1'),
 
     # full class specification
     (xp.h2.by(_id="huhu"),        '//h2[@id="huhu"]'),
