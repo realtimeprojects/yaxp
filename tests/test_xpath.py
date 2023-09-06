@@ -4,13 +4,13 @@ from yaxp import xpath as xp
 
 testdata = [
     # basic xpath
-    (xp.h1(),                  '//h1'),
+    (xp.h1,                  '//h1'),
 
     # full class specification
-    (xp.h2(_id="huhu"),        '//h2[@id="huhu"]'),
+    (xp.h2.by(_id="huhu"),        '//h2[@id="huhu"]'),
 
     # direct parent
-    (xp.h2(_id="huhu", direct=True),        '/h2[@id="huhu"]'),
+    (xp.h2.by(_id="huhu", direct=True),        '/h2[@id="huhu"]'),
 
     # partial-match specification
     (xp.span(_id="*huhu"),  '//span[contains(@id, "huhu")]'),
@@ -63,6 +63,9 @@ testdata = [
 
     # chaining
     (xp.div().h1(_class="myclass"), '//div//h1[@class="myclass"]'),
+
+    # short chaining
+    (xp.div.h1(_class="myclass"), '//div//h1[@class="myclass"]'),
 
     # tags containing "."
     # (xp(tag="Andorid.Container", _id="huhu"), '//Android.Container[@id="myid"]'),

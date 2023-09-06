@@ -18,16 +18,29 @@ class XPG:
                             like `class` as attributes using:
                             `Xpath.h5(_class="#title")`
     """
-    def __init__(self, tag="*", direct=False, parent=None, **kwargs):
-        self._xpath = str(parent) if parent else ""
-        self._xpath += "/" if direct else "//"
-        self._xpath += tag
-        self._xpath += XPG._filter(**kwargs)
+    def __init__(self, tag=None, parent=None):
+        self._parent = parent
+        self._tag = tag
+        self._filter = []
+        self._direct = False
 
-    @staticmethod
-    def _filter(**kwargs):
+    def by(self, **kwargs):
+        self._add_filter(**kwargs)
+        return self
+
+    def __call__(self, **kwargs):
+        self._add_filter(**kwargs)
+        return self
+
+    def _add_filter(self, **kwargs):
         filter = ""
         for arg, values in kwargs.items():
+            if arg == "direct":
+                self._direct = values
+                continue
+            if arg == "parent":
+                self._parent = values
+                continue
             wildcard = False
             if arg == "_text":
                 arg = "text"
@@ -50,32 +63,40 @@ class XPG:
                     filter += f'[contains(concat(" ", normalize-space({arg}), " "), " {value[1:]} ")]'
                 else:
                     filter += f'[{arg}="{value}"]'
-        return filter
+        self._filter.append(filter)
 
     @staticmethod
     def _by_xpath(xpath):
-        xp = XPG()
-        xp._xpath = xpath
-        return xp
+        return XPG(tag=xpath)
 
     @property
     def xpath(self):
+        return self._xpath()
+
+    def get_xpath(self):
         """ :return: The generated xpath as string """
-        return self._xpath
+        _xp = str(self._parent) if self._parent else ""
+        pre = "/" if self._direct else "//"
+        _xp += pre + self._tag if self._tag else ""
+        for _f in self._filter:
+            _xp += _f
+        return _xp
 
     def __repr__(self):
-        return self.xpath
+        print(self.get_xpath())
+        return self.get_xpath()
 
     def has(self, *args):
         """ Nested predicates. Filter for an element that has a specific
             xpath as sub-element, while this xpath still points to the parent
             element.
         """
-        _has = ["." + arg.xpath for arg in args]
-        return XPG._by_xpath(self.xpath + "[" + " and ".join(_has) + "]")
+        _has = ["." + str(arg) for arg in args]
+        self._filter.append("[" + " and ".join(_has) + "]")
+        return self
 
     def following(self, xpath):
-        return f"{xpath}/following-sibling::{self.xpath.lstrip('/')}"
+        return f"{xpath}/following-sibling::{self.get_xpath().lstrip('/')}"
 
     def contains(self, **kwargs):
         """ Adds a filter for the keyword attributes matching all values
@@ -83,18 +104,11 @@ class XPG:
         """
         for key, value in kwargs.items():
             kwargs[key] = "*" + value
-        return XPG._by_xpath(self.xpath + self._filter(**kwargs))
+        self._add_filter(**kwargs)
+        return self
 
     def __getattr__(self, name):
         if name[0] == "_":
-            return super().__getattr__(name)
+            name = name[1:]
 
-        def constructor(**kwargs):
-            if 'parent' in kwargs:
-                parent = str(kwargs['parent']) + self.xpath
-                del kwargs['parent']
-            else:
-                parent = self.xpath
-            return XPG(tag=name, parent=parent, **kwargs)
-
-        return constructor
+        return XPG(name, parent=self)
