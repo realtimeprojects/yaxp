@@ -1,13 +1,16 @@
+import copy
+
+
 class XPG:
     """ Base class for generating xpathes.
 
         Usually, you don't use the constructor directly, but the xpath instance of the root element
         instead, like in the example in the class description. However, since this will call this
-        constructor, all parameters (except tag) can be passed like in the example of the class
+        constructor, all parameters (except role) can be passed like in the example of the class
         description.
 
-        :param tag:         Tag for the xpath, e.g. `span`, `h1`, etc.
-        :param direct:      If set to `True`, the tag must be a direct descendant of the parent element
+        :param role:        role for the xpath, e.g. `span`, `h1`, etc.
+        :param direct:      If set to `True`, the role must be a direct descendant of the parent element
                             otherwise it can be nested in any sub-element as well.
         :param parent:      If set, this is the xpath of the parent element to search from, otherwise
                             the search starts at the root element of the document. **parent** can either be
@@ -18,15 +21,18 @@ class XPG:
                             like `class` as attributes using:
                             `Xpath.h5(_class="#title")`
     """
-    def __init__(self, tag=None, parent=None):
-        self._parent = parent
-        self._tag = tag
+    def __init__(self, role=None, parent=None):
+        self._parent = str(parent) if parent else ""
+        self._role = role
         self._filter = []
         self._direct = False
 
     def by(self, **kwargs):
-        self._add_filter(**kwargs)
-        return self
+        _xp = XPG(self._role, self._parent)
+        _xp._filter = self._filter
+        _xp._direct = self._direct
+        _xp._add_filter(**kwargs)
+        return _xp
 
     def __call__(self, **kwargs):
         self._add_filter(**kwargs)
@@ -39,7 +45,10 @@ class XPG:
                 self._direct = values
                 continue
             if arg == "parent":
-                self._parent = values
+                self._parent = str(values)
+                continue
+            if arg == "role":
+                self._role = values
                 continue
             wildcard = False
             if arg == "_text":
@@ -67,7 +76,7 @@ class XPG:
 
     @staticmethod
     def _by_xpath(xpath):
-        return XPG(tag=xpath)
+        return XPG(role=xpath)
 
     @property
     def xpath(self):
@@ -77,13 +86,12 @@ class XPG:
         """ :return: The generated xpath as string """
         _xp = str(self._parent) if self._parent else ""
         pre = "/" if self._direct else "//"
-        _xp += pre + self._tag if self._tag else ""
+        _xp += pre + self._role if self._role else ""
         for _f in self._filter:
             _xp += _f
         return _xp
 
     def __repr__(self):
-        print(self.get_xpath())
         return self.get_xpath()
 
     def has(self, *args):

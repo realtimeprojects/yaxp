@@ -5,7 +5,7 @@ from yaxp import xpath as xp
 testdata = [
     # basic xpath
     (xp.h1,                  '//h1'),
-    (xp.div.h1,                  '//div//h1'),
+    (xp.div.h1,              '//div//h1'),
 
     # full class specification
     (xp.h2.by(_id="huhu"),        '//h2[@id="huhu"]'),
@@ -48,6 +48,7 @@ testdata = [
 
     # xpath as  parent
     (xp.span(_id="myid", parent=xp.div()), '//div//span[@id="myid"]'),
+    (xp.by(role="h1", parent=xp.div), '//div//h1'),
 
     # multiple chaining
     (xp.span(_id="myid", parent=xp.div(parent=xp.body())), '//body//div//span[@id="myid"]'),
@@ -68,7 +69,7 @@ testdata = [
     # short chaining
     (xp.div.h1(_class="myclass"), '//div//h1[@class="myclass"]'),
 
-    # tags containing "."
+    # roles containing "."
     (xp.Android_Container(_id="huhu"), '//Android.Container[@id="huhu"]'),
 
     # tags containing "_"
