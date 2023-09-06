@@ -110,5 +110,7 @@ class XPG:
     def __getattr__(self, name):
         if name[0] == "_":
             name = name[1:]
+        name = name.replace("_", ".")
+        name = name.replace("..", "_")
 
         return XPG(name, parent=self)

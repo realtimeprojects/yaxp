@@ -68,7 +68,10 @@ testdata = [
     (xp.div.h1(_class="myclass"), '//div//h1[@class="myclass"]'),
 
     # tags containing "."
-    # (xp(tag="Andorid.Container", _id="huhu"), '//Android.Container[@id="myid"]'),
+    (xp.Android_Container(_id="huhu"), '//Android.Container[@id="huhu"]'),
+
+    # tags containing "_"
+    (xp.Android__Container(_id="huhu"), '//Android_Container[@id="huhu"]'),
 ]
 
 
