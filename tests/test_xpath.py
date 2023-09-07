@@ -18,6 +18,7 @@ testdata = [
 
     # partial-match specification
     (xp.span(_id="*huhu"),  '//span[contains(@id, "huhu")]'),
+    (xp.span.contains(_id="huhu"),  '//span[contains(@id, "huhu")]'),
 
     # text match exactly
     (xp.span(text="Hello"),  '//span[.="Hello"]'),
