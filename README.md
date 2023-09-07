@@ -6,12 +6,12 @@ Create an xpath with an chainable and intuitive API.
 
 Create the most simple xpath for a `div` element:
 
-    ``` python
-    from yaxp import xpath
+``` python
+from yaxp import xpath
 
-    # //div
-    xpath.div
-    ```
+# //div
+xpath.div
+```
 
 xpath objects are chainable:
 
