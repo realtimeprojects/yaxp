@@ -56,7 +56,7 @@ Alternatively, you can use the `contains()` function to filter for subtrings.
 the following statement is equal to the above
 
 ``` python
-xpath.div().contains(_class="mycl")    # //div[contains(@class, 'mycl')]
+xpath.div.contains(_class="mycl")    # //div[contains(@class, 'mycl')]
 ```
 
 xpath supports "nested predicates", i.e. you can filter for specific sub-elements,
@@ -64,14 +64,14 @@ while the xpath itself will point to the parent element (div in this example).
 
 ``` python
 # //div[./span[@class='mycl']]
-xpath.div().has(xpath.span(_class="mycl"))
+xpath.div.has(xpath.span(_class="mycl"))
 ```
 
 Nested predicates are chainable:
 
 ``` python
 # //div[./span[@class='mycl'][./p[.="hello"]]]
-xpath.div().has(xpath.span(_class="mycl")).has(xpath.p(text="hello"))
+xpath.div.has(xpath.span(_class="mycl")).has(xpath.p(text="hello"))
 ```
 
 If the value of an attribute starts with a hashtag (`#`), the xpath matches
@@ -79,14 +79,14 @@ any element that has the following text as a *full word* in this attribute.
 
 ``` python
 # //div[contains(concat(' ', normalize-space(@class), ' '), ' myclass ')]
-Xpath.div(_class="#myclass")
+xpath.div(_class="#myclass")
 ```
 
 Any combination of the features are allowed:
 
 ``` python
 # //span[contains(@class, "mycl")][@placeholder="huhu"]
-Xpath.span(_class="*mycl", _placeholder='huhu')
+xpath.span(_class="*mycl", _placeholder='huhu')
 ```
 
 ## Further reading
