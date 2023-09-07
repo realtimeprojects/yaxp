@@ -28,9 +28,14 @@ class XPG:
         self._direct = False
 
     def by(self, **kwargs):
-        _xp = XPG(self._role, self._parent)
-        _xp._filter = self._filter
-        _xp._direct = self._direct
+        role = copy.copy(self._role) if self._role else "*"
+        filter = copy.copy(self._filter)
+        parent = copy.copy(self._parent)
+        direct = copy.copy(self._direct)
+
+        _xp = XPG(role, parent)
+        _xp._filter = filter
+        _xp._direct = direct
         _xp._add_filter(**kwargs)
         return _xp
 

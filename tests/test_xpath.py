@@ -13,6 +13,9 @@ testdata = [
     # direct parent
     (xp.h2.by(_id="huhu", direct=True),        '/h2[@id="huhu"]'),
 
+    # No role
+    (xp.by(_id="huhu"),        '//*[@id="huhu"]'),
+
     # partial-match specification
     (xp.span(_id="*huhu"),  '//span[contains(@id, "huhu")]'),
 

@@ -27,6 +27,13 @@ attribute with the name and value of the keyword:
     xpath.div(role="cell")
     ```
 
+Alternatively, use the `by()` method to specify attributes:
+
+    ``` python
+    # //*[@class="main"]
+    xpath.by(_class="main")
+    ```
+
 An `_` at the beginning of the attribute name will be
 removed, this is helpful for attributes that represents
 python keywords like "class" or "id":
