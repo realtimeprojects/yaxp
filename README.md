@@ -75,6 +75,14 @@ Nested predicates are chainable:
 xpath.div.has(xpath.span(_class="mycl")).has(xpath.p(text="hello"))
 ```
 
+As you can see in the example above, a text attribute will be converted to ".".
+In order to avoid this, use "_":
+
+``` python
+# /p[text="hello"]]]
+xpath.p(_text="hello"))
+```
+
 If the value of an attribute starts with a hashtag (`#`), the xpath matches
 any element that has the following text as a *full word* in this attribute:
 

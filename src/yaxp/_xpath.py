@@ -56,14 +56,14 @@ class XPG:
                 self._role = values
                 continue
             wildcard = False
+            force_text = False
             if arg == "_text":
-                arg = "text"
-                wildcard = True
+                force_text = True
             if arg[0] == "_":
                 arg = arg[1:]
             else:
                 arg = arg.replace("_", "-")
-            arg = "." if arg == "text" else f"@{arg}"
+            arg = "." if arg == "text" and not force_text else f"@{arg}"
             if not values:
                 continue
             if not isinstance(values, list):

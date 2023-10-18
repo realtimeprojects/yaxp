@@ -23,14 +23,14 @@ testdata = [
     # text match exactly
     (xp.span(text="Hello"),  '//span[.="Hello"]'),
 
+    # text attribute match
+    (xp.span(_text="Hello2"),  '//span[@text="Hello2"]'),
+
     # text match partial
     (xp.span(text="*World"),  '//span[contains(., "World")]'),
 
     # text match partial
     (xp.span(_id="myid").contains(text="Hello", _class="myclass"),  '//span[@id="myid"][contains(., "Hello")][contains(@class, "myclass")]'),
-
-    # text match partial, _text will be interpreted as "contains the text", only for text attribute
-    (xp.span(_text="Hello"),  '//span[contains(., "Hello")]'),
 
     # word-match specification
     (xp.div(_class="#part"),   '//div[contains(concat(" ", normalize-space(@class), " "), " part ")]'),
