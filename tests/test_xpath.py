@@ -17,20 +17,20 @@ testdata = [
     (xp.by(_id="huhu"),        '//*[@id="huhu"]'),
 
     # partial-match specification
-    (xp.span(_id="*huhu"),  '//span[contains(@id, "huhu")]'),
-    (xp.span.contains(_id="huhu"),  '//span[contains(@id, "huhu")]'),
+    (xp.span(_id="*huhu"),  '//span[@id[contains(., "huhu")]]'),
+    (xp.span.contains(_id="huhu"),  '//span[@id[contains(., "huhu")]]'),
 
     # text match exactly
     (xp.span(text="Hello"),  '//span[text()="Hello"]'),
 
     # text match exactly
-    (xp.span(text="*Hello3"),  '//span[contains(text(), "Hello3")]'),
+    (xp.span(text="*Hello3"),  '//span[text()[contains(., "Hello3")]]'),
 
     # text attribute match
     (xp.span(_text="Hello2"),  '//span[@text="Hello2"]'),
 
     # text attribute match
-    (xp.span(_text="*Hello4"),  '//span[contains(@text, "Hello4")]'),
+    (xp.span(_text="*Hello4"),  '//span[@text[contains(., "Hello4")]]'),
 
     # text match partial
     (xp.span(_="*World"),  '//span[contains(., "World")]'),
@@ -39,7 +39,7 @@ testdata = [
     (xp.span(_="World"),  '//span[.="World"]'),
 
     # text match partial
-    (xp.span(_id="myid").contains(_="Hello", _class="myclass"),  '//span[@id="myid"][contains(., "Hello")][contains(@class, "myclass")]'),
+    (xp.span(_id="myid").contains(_="Hello", _class="myclass"),  '//span[@id="myid"][contains(., "Hello")][@class[contains(., "myclass")]]'),
 
     # word-match specification
     (xp.div(_class="#part"),   '//div[contains(concat(" ", normalize-space(@class), " "), " part ")]'),
