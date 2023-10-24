@@ -21,16 +21,25 @@ testdata = [
     (xp.span.contains(_id="huhu"),  '//span[contains(@id, "huhu")]'),
 
     # text match exactly
-    (xp.span(text="Hello"),  '//span[.="Hello"]'),
+    (xp.span(text="Hello"),  '//span[text()="Hello"]'),
+
+    # text match exactly
+    (xp.span(text="*Hello3"),  '//span[contains(text(), "Hello3")]'),
 
     # text attribute match
     (xp.span(_text="Hello2"),  '//span[@text="Hello2"]'),
 
-    # text match partial
-    (xp.span(text="*World"),  '//span[contains(., "World")]'),
+    # text attribute match
+    (xp.span(_text="*Hello4"),  '//span[contains(@text, "Hello4")]'),
 
     # text match partial
-    (xp.span(_id="myid").contains(text="Hello", _class="myclass"),  '//span[@id="myid"][contains(., "Hello")][contains(@class, "myclass")]'),
+    (xp.span(_="*World"),  '//span[contains(., "World")]'),
+
+    # text match partial
+    (xp.span(_="World"),  '//span[.="World"]'),
+
+    # text match partial
+    (xp.span(_id="myid").contains(_="Hello", _class="myclass"),  '//span[@id="myid"][contains(., "Hello")][contains(@class, "myclass")]'),
 
     # word-match specification
     (xp.div(_class="#part"),   '//div[contains(concat(" ", normalize-space(@class), " "), " part ")]'),
