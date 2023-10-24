@@ -78,7 +78,7 @@ class XPG:
                 if wildcard:
                     filter += f'[contains({arg}, "{value}")]'
                 elif value[0] == "*":
-                    filter += f'[contains({arg}, "{value[1:]}")]'
+                    filter += f'[{arg}[contains(., "{value[1:]}")]]'
                 elif value[0] == "#":
                     filter += f'[contains(concat(" ", normalize-space({arg}), " "), " {value[1:]} ")]'
                 else:
