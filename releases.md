@@ -1,7 +1,7 @@
 # Release notes
 
 ## v1.0.0
->   v1.1.0a1
+> 2023-11-14
 
 -   Reworked text handling:
     - `xpath.p(text='...')` will be converted to `//p[text()='...']`
