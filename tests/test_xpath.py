@@ -39,7 +39,8 @@ testdata = [
     (xp.span(_="World"),  '//span[.="World"]'),
 
     # text match partial
-    (xp.span(_id="myid").contains(_="Hello", _class="myclass"),  '//span[@id="myid"][contains(., "Hello")][@class[contains(., "myclass")]]'),
+    (xp.span(_id="myid").contains(_="Hello", _class="myclass"),
+        '//span[@id="myid"][contains(., "Hello")][@class[contains(., "myclass")]]'),
 
     # word-match specification
     (xp.div(_class="#part"),   '//div[contains(concat(" ", normalize-space(@class), " "), " part ")]'),
@@ -87,6 +88,10 @@ testdata = [
 
     # tags containing "_"
     (xp.Android__Container(_id="huhu"), '//Android_Container[@id="huhu"]'),
+
+    # values containing \"
+    (xp.span(test_id='hu"hu'), "//span[@test-id='hu\"hu']"),
+    (xp.span(_='*Wo"rld'),  "//span[contains(., 'Wo\"rld')]"),
 ]
 
 

@@ -76,16 +76,16 @@ class XPG:
                 values = [values]
             for value in values:
                 if wildcard:
-                    filter += f'[contains({arg}, "{value}")]'
+                    filter += f'[contains({arg}, {_quote(value)})]'
                 elif value[0] == "*":
                     if arg == ".":
-                        filter += f'[contains(., "{value[1:]}")]'
+                        filter += f'[contains(., {_quote(value[1:])})]'
                     else:
-                        filter += f'[{arg}[contains(., "{value[1:]}")]]'
+                        filter += f'[{arg}[contains(., {_quote(value[1:])})]]'
                 elif value[0] == "#":
-                    filter += f'[contains(concat(" ", normalize-space({arg}), " "), " {value[1:]} ")]'
+                    filter += f'[contains(concat(" ", normalize-space({arg}), " "), {_quote(" " + value[1:] + " ")})]'
                 else:
-                    filter += f'[{arg}="{value}"]'
+                    filter += f'[{arg}={_quote(value)}]'
         self._filter.append(filter)
 
     @staticmethod
@@ -136,3 +136,11 @@ class XPG:
         name = name.replace("..", "_")
 
         return XPG(name, parent=self)
+
+
+def _quote(value):
+    if '"' in value and "'" in value:
+        raise Exception("values containing `'` and `\"` are not supported")
+    if '"' in value:
+        return f"'{value}'"
+    return f'"{value}"'
